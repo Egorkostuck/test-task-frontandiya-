@@ -7,6 +7,9 @@ $transition-default: 0.3s ease-in-out;
 $html-font-size: 10;
 $html-font-size-sm: 8;
 
+// responsive for ios
+$responsive-ios: 812px;
+
 // Breakpoints
 $breakpoints: (
   mobile-small: 575px,

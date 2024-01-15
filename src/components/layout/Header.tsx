@@ -10,7 +10,7 @@ const Header = (): JSX.Element => {
       <div className="container">
         <div className="header__content">
           <div className="header__logo">
-            <SvgSprite id="logo-git" size={['48', '48']} color="#fff" />
+            <SvgSprite id="logo-git" size={['41', '41']} color="#fff" />
           </div>
 
           <div className="header__search">

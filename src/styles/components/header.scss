@@ -10,6 +10,7 @@
     width: 100%;
     height: 65px;
     background-color: var(--blue);
+    z-index: 10000;
 
     &__content {
       padding: 10px 0;

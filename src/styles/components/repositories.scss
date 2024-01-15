@@ -7,6 +7,10 @@
     flex: 0 0 auto;
     width: calc(70% - 40px);
 
+    @include breakpoint-down(tablet) {
+      width: 100%;
+    }
+
     &__title {
       font-size: 25px !important;
       font-weight: 700 !important;
