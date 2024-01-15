@@ -1,0 +1,25 @@
+@import "src/styles/common/variables";
+@import "src/styles/common/functions";
+@import "src/styles/common/mixin";
+
+@layer component {
+  .input-search {
+    padding: 8px 8px 8px 42px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+    font-family: $open-sans;
+    background-image: url(./../../assets/icons/find-min.svg);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 15px center;
+
+
+    &::placeholder {
+      color: var(--grey)
+    }
+  }
+}

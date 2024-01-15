@@ -1,0 +1,45 @@
+@import "src/styles/common/variables";
+@import "src/styles/common/functions";
+@import "src/styles/common/mixin";
+
+@layer component {
+  .card {
+    margin-bottom: 20px;
+    width: 100%;
+    background-color: var(--white);
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &__wrapper {
+      padding: 25px 30px;
+    }
+
+    &__link {
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--grey);
+        }
+      }
+
+      @media (pointer: coarse) {
+        &:active {
+          color: var(--grey);
+        }
+      }
+    }
+
+    &__discription {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--black);
+    }
+  }
+}
