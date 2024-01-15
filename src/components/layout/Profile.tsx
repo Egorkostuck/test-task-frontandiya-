@@ -10,8 +10,7 @@ interface Props {
 
 const Profile: FC<Props> = (props: Props): JSX.Element => {
   const { user } = props;
-  // eslint-disable-next-line
-  console.log(user);
+
   if (user === null) return <div>not profile</div>;
 
   return (

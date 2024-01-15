@@ -7,6 +7,7 @@ export interface UserState {
   repositories: [];
   loading: boolean;
   error: string | null;
+  currentPage: number;
 }
 
 const initialState: UserState = {
@@ -14,6 +15,7 @@ const initialState: UserState = {
   repositories: [],
   loading: false,
   error: null,
+  currentPage: 1,
 };
 
 export const userSlice = createSlice({
@@ -47,6 +49,9 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    changeCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
   },
 });
 
@@ -57,5 +62,6 @@ export const {
   fetchUserReposRequest,
   fetchUserReposSuccess,
   clearUserData,
+  changeCurrentPage,
 } = userSlice.actions;
 export default userSlice.reducer;

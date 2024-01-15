@@ -6,7 +6,7 @@ import SvgSprite from '../shared/SvgSprite';
 import '../../styles/components/default-window.scss';
 
 const DefaultWindow: FC = (): JSX.Element => {
-  const { user, error, loading } = useSelector((state: any) => state.user);
+  const { error, loading } = useSelector((state: any) => state.user);
   const sizeIcon: number = 70;
   const defaultText: string = 'Start with searching a GitHub user';
 
@@ -17,7 +17,7 @@ const DefaultWindow: FC = (): JSX.Element => {
   const getContent = (): JSX.Element | undefined => {
     if (loading) return;
 
-    if (error !== null) return <h3 className="default-window__text">{user.message}</h3>;
+    if (error !== null) return <h3 className="default-window__text">{error}</h3>;
 
     return (
       <>
