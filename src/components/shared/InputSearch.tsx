@@ -2,7 +2,7 @@ import { FC, JSX, SetStateAction, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Logger from '../../helpers/logger';
+import { getRepoByLink, getUserByName } from '../../api/Api';
 import {
   fetchUserRequest,
   fetchUserSuccess,
@@ -22,65 +22,56 @@ export interface GitHubUser {
   following: number;
   html_url: string;
   repos_url: string;
+  public_repos: number;
+  message?: string;
   [key: string]: unknown;
 }
 
 const InputSearch: FC = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.user);
+  const { user, currentPage } = useSelector((state: any) => state.user);
   const [searchProfile, setSearchProfile] = useState('');
 
-  const accessToken: string = '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';
   const delay: number = 1000;
+  const perPage: number = 4;
 
   const fetchRepos = async (url: string): Promise<void | null> => {
-    if (!user) return;
     dispatch(fetchUserReposRequest());
 
-    await fetch(`${url}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then(response => response.json())
-      .then(data => dispatch(fetchUserReposSuccess(data)))
-      .catch(error => {
-        dispatch(fetchUserFailure(error.message));
-        Logger.printError(error);
-      });
+    const response = await getRepoByLink({ url, currentPage, perPage });
+
+    dispatch(fetchUserReposSuccess(response));
   };
   const fetchUser = async (): Promise<GitHubUser | null> => {
     dispatch(fetchUserRequest());
 
-    await fetch(`https://api.github.com/users/${searchProfile}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        dispatch(fetchUserSuccess(data));
-        fetchRepos(data.repos_url);
-      })
-      .catch(error => {
-        dispatch(fetchUserFailure(error.message));
-        Logger.printError(error);
-      });
+    const response = await getUserByName(searchProfile);
+
+    if (response?.message) {
+      dispatch(fetchUserFailure(response.message));
+
+      return null;
+    }
+
+    if (response) {
+      dispatch(fetchUserSuccess(response));
+      await fetchRepos(response.repos_url);
+    }
 
     return user;
   };
 
   useEffect(() => {
-    const delayRequest = setTimeout(() => {
+    const delayRequest = setTimeout(async (): Promise<void> => {
       if (searchProfile.trim() !== '') {
-        fetchUser();
+        await fetchUser();
       } else {
         dispatch(clearUserData());
       }
     }, delay);
 
     return () => clearTimeout(delayRequest);
-  }, [searchProfile, dispatch]);
+  }, [searchProfile]);
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }): void => {
     setSearchProfile(e.target.value);
   };

@@ -13,24 +13,28 @@ import './styles/components/app.scss';
 const App = (): JSX.Element => {
   const { user, loading, error } = useSelector((state: any) => state.user);
 
+  const getContent = (): JSX.Element => {
+    if (!!loading || user === null || error) {
+      return <DefaultWindow />;
+    }
+
+    return (
+      <div className="app__content">
+        <Container>
+          <div className="app__info-container">
+            <Profile user={user} />
+            <Repositories />
+          </div>
+        </Container>
+      </div>
+    );
+  };
+
   return (
     <div className="app">
       <Header />
 
-      <main>
-        {!!loading || user === null || error ? (
-          <DefaultWindow />
-        ) : (
-          <div className="app__content">
-            <Container>
-              <div className="app__info-container">
-                <Profile user={user} />
-                <Repositories />
-              </div>
-            </Container>
-          </div>
-        )}
-      </main>
+      <main>{getContent()}</main>
     </div>
   );
 };
