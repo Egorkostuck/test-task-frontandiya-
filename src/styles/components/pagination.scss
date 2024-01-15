@@ -1,0 +1,26 @@
+@import "src/styles/common/variables";
+@import "src/styles/common/functions";
+@import "src/styles/common/mixin";
+
+@layer component {
+  .pagination {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+
+    @include breakpoint-down(mobile) {
+      flex-direction: column;
+    }
+
+    &__info {
+      color: var(--grey);
+      font-size: 16px;
+    }
+
+    .css-yx0nvq-MuiButtonBase-root-MuiPaginationItem-root {
+      font-size: 14px !important;
+    }
+  }
+}
