@@ -35,10 +35,10 @@ const InputSearch: FC = (): JSX.Element => {
   const delay: number = 1000;
   const perPage: number = 4;
 
-  const fetchRepos = async (url: string): Promise<void | null> => {
+  const fetchRepos = async (login: string): Promise<void | null> => {
     dispatch(fetchUserReposRequest());
 
-    const response = await getRepoByLink({ url, currentPage, perPage });
+    const response = await getRepoByLink({ login, currentPage, perPage });
 
     dispatch(fetchUserReposSuccess(response));
   };
@@ -55,7 +55,7 @@ const InputSearch: FC = (): JSX.Element => {
 
     if (response) {
       dispatch(fetchUserSuccess(response));
-      await fetchRepos(response.repos_url);
+      await fetchRepos(response.login);
     }
 
     return user;

@@ -25,6 +25,7 @@ export const userSlice = createSlice({
     fetchUserRequest: state => {
       state.loading = true;
       state.error = null;
+      state.currentPage = 1;
     },
     fetchUserSuccess: (state, action) => {
       state.user = action.payload;
