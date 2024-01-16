@@ -36,23 +36,26 @@ const PaginationApp: FC<Props> = (props: Props): JSX.Element => {
     return lastItemOnPage;
   };
 
-  const getNewRepos = async (url: string, currentPage: number): Promise<void | null> => {
+  const getNewRepos = async (
+    login: string,
+    currentPage: number,
+  ): Promise<void | null> => {
     if (!user) return;
     dispatch(fetchUserReposRequest());
 
     const perPage: number = itemsPerPage;
 
-    const response = await getRepoByLink({ url, currentPage, perPage });
+    const response = await getRepoByLink({ login, currentPage, perPage });
 
     dispatch(fetchUserReposSuccess(response));
   };
 
   const handleChange = async (event: unknown, value: number): Promise<void> => {
-    const url = user.repos_url;
+    const { login } = user;
 
     dispatch(changeCurrentPage(value));
 
-    await getNewRepos(url, value);
+    await getNewRepos(login, value);
   };
 
   return (
