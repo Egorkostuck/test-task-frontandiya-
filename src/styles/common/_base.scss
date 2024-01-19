@@ -1,6 +1,6 @@
-@import "functions";
-@import "variables";
-@import "mixin";
+@import "src/styles/common/functions";
+@import "src/styles/common/variables";
+@import "src/styles/common/mixin";
 
 html {
   font-size: $html-font-size * 1px;

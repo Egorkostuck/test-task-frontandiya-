@@ -2,7 +2,7 @@
 @use "sass:list";
 @use "sass:map";
 
-@import "./variables";
+@import "src/styles/common/variables";
 
 @function breakpoint-next(
   $name,

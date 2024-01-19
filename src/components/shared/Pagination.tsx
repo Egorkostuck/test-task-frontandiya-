@@ -1,26 +1,17 @@
-import { FC, JSX } from 'react';
+import { FC } from 'react';
 
 import Pagination from '@mui/material/Pagination';
-import { useDispatch, useSelector } from 'react-redux';
 
-import '../../styles/components/pagination.scss';
-import { getRepoByLink } from '../../api/Api';
-import {
-  changeCurrentPage,
-  fetchUserReposRequest,
-  fetchUserReposSuccess,
-} from '../../store/user/userData.slice';
+import 'styles/components/pagination.scss';
 
 interface Props {
   itemsPerPage: number;
   currentPage: number;
   countItems: number;
+  changePage: (page: number) => void;
 }
-const PaginationApp: FC<Props> = (props: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.user);
-
-  const { itemsPerPage, currentPage, countItems } = props;
+const PaginationApp: FC<Props> = (props: Props) => {
+  const { itemsPerPage, currentPage, countItems, changePage } = props;
 
   const getMaxPages: number = Math.ceil(countItems / itemsPerPage);
 
@@ -31,31 +22,15 @@ const PaginationApp: FC<Props> = (props: Props): JSX.Element => {
   const getLastItemOnPage = (): number => {
     let lastItemOnPage: number = Math.ceil(itemsPerPage * currentPage);
 
-    if (lastItemOnPage > countItems) lastItemOnPage = countItems;
+    if (lastItemOnPage > countItems) {
+      lastItemOnPage = countItems;
+    }
 
     return lastItemOnPage;
   };
 
-  const getNewRepos = async (
-    login: string,
-    currentPage: number,
-  ): Promise<void | null> => {
-    if (!user) return;
-    dispatch(fetchUserReposRequest());
-
-    const perPage: number = itemsPerPage;
-
-    const response = await getRepoByLink({ login, currentPage, perPage });
-
-    dispatch(fetchUserReposSuccess(response));
-  };
-
-  const handleChange = async (event: unknown, value: number): Promise<void> => {
-    const { login } = user;
-
-    dispatch(changeCurrentPage(value));
-
-    await getNewRepos(login, value);
+  const handleChange = (event: unknown, value: number): void => {
+    changePage(value);
   };
 
   return (
