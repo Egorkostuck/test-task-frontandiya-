@@ -1,10 +1,13 @@
-import { JSX } from 'react';
+import { FC } from 'react';
 
-import InputSearch from '../shared/InputSearch';
-import SvgSprite from '../shared/SvgSprite';
-import '../../styles/components/header.scss';
+import InputSearch from 'components/shared/InputSearch';
+import SvgSprite from 'components/shared/SvgSprite';
+import 'styles/components/header.scss';
 
-const Header = (): JSX.Element => {
+interface Props {
+  onSearchInputChange: (value: string) => void;
+}
+const Header: FC<Props> = ({ onSearchInputChange }) => {
   return (
     <header className="header">
       <div className="container">
@@ -14,7 +17,7 @@ const Header = (): JSX.Element => {
           </div>
 
           <div className="header__search">
-            <InputSearch />
+            <InputSearch onInputChange={onSearchInputChange} />
           </div>
         </div>
       </div>

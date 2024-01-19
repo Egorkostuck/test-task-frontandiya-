@@ -1,13 +1,11 @@
-import { FC, JSX } from 'react';
+import { FC, ReactNode } from 'react';
 
-import '../../styles/common/_base.scss';
+import 'styles/common/_base.scss';
 
 interface Props {
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode | ReactNode[];
 }
-const Container: FC<Props> = (props: Props): JSX.Element => {
-  const { children } = props;
-
+const Container: FC<Props> = ({ children }) => {
   return <div className="container">{children}</div>;
 };
 

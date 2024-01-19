@@ -1,13 +1,13 @@
-import { FC, JSX } from 'react';
+import { FC } from 'react';
 
-import '../../styles/components/repocards.scss';
+import 'styles/components/repocards.scss';
 
 interface Props {
   name: string;
   description: string;
   url: string;
 }
-const RepoCards: FC<Props> = (props: Props): JSX.Element => {
+const RepoCards: FC<Props> = (props: Props) => {
   const { name, description, url } = props;
 
   return (

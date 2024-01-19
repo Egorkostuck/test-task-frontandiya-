@@ -1,23 +1,46 @@
-import { FC, JSX } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { useSelector } from 'react-redux';
+import SvgSprite from 'components/shared/SvgSprite';
+import 'styles/components/default-window.scss';
 
-import SvgSprite from '../shared/SvgSprite';
-import '../../styles/components/default-window.scss';
+interface Data {
+  message: string;
+  documentation_url: string;
+}
 
-const DefaultWindow: FC = (): JSX.Element => {
-  const { error, loading } = useSelector((state: any) => state.user);
-  const sizeIcon: number = 70;
-  const defaultText: string = 'Start with searching a GitHub user';
+interface Error {
+  data: Data;
+  status: number;
+}
 
-  const getLoader = (): JSX.Element => {
-    return loading && <div className="default-window__loader" />;
+interface Props {
+  loading: boolean;
+  error?: Error;
+}
+const DefaultWindow: FC<Props> = props => {
+  const { loading = false, error } = props;
+
+  const sizeIcon = 70;
+  const defaultText = 'Start with searching a GitHub user';
+
+  const getLoader = (): ReactNode | null => {
+    if (loading) {
+      return <div className="default-window__loader" />;
+    }
+
+    return null;
   };
 
-  const getContent = (): JSX.Element | undefined => {
-    if (loading) return;
+  const getErrorMessage = (): ReactNode | null => {
+    return error && loading === false ? (
+      <h3 className="default-window__text">{error?.data?.message}</h3>
+    ) : null;
+  };
 
-    if (error !== null) return <h3 className="default-window__text">{error}</h3>;
+  const getContent = (): ReactNode | null => {
+    if (loading || error) {
+      return null;
+    }
 
     return (
       <>
@@ -31,6 +54,8 @@ const DefaultWindow: FC = (): JSX.Element => {
     <div className="default-window">
       <div className="default-window__container">
         {getLoader()}
+
+        {getErrorMessage()}
 
         {getContent()}
       </div>

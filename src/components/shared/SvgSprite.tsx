@@ -1,4 +1,4 @@
-import React, { FC, JSX } from 'react';
+import React, { FC } from 'react';
 
 interface TProps {
   id: string;
@@ -6,7 +6,7 @@ interface TProps {
   color?: string;
 }
 
-const SvgSprite: FC<TProps> = (props: TProps): JSX.Element => {
+const SvgSprite: FC<TProps> = props => {
   const { id = '', size = ['auto', 'auto'], color = 'white' } = props;
 
   return (

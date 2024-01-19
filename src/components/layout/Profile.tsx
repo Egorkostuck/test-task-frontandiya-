@@ -1,17 +1,19 @@
-import { FC, JSX } from 'react';
+import { FC } from 'react';
 
-import '../../styles/components/profile.scss';
-import { GitHubUser } from '../shared/InputSearch';
-import SvgSprite from '../shared/SvgSprite';
+import 'styles/components/profile.scss';
+import { GitHubUser } from 'components/shared/InputSearch';
+import SvgSprite from 'components/shared/SvgSprite';
 
 interface Props {
   user: GitHubUser;
 }
 
-const Profile: FC<Props> = (props: Props): JSX.Element => {
+const Profile: FC<Props> = (props: Props) => {
   const { user } = props;
 
-  if (user === null) return <div>not profile</div>;
+  if (user === null) {
+    return <div>not profile</div>;
+  }
 
   return (
     <div className="profile">
