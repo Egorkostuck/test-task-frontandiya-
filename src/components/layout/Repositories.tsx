@@ -1,25 +1,33 @@
-import { FC, JSX } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { useSelector } from 'react-redux';
+import PaginationApp from 'components/shared/Pagination';
+import RepoCards from 'components/shared/RepoCards';
 
-import PaginationApp from '../shared/Pagination';
-import RepoCards from '../shared/RepoCards';
+import 'styles/components/repositories.scss';
 
-import '../../styles/components/repositories.scss';
-
-interface Repo {
+export interface Repo {
   id: number;
   name: string;
   description: string;
   html_url: string;
+  [key: string]: unknown;
 }
 
-const Repositories: FC = (): JSX.Element => {
-  const { user, repositories, currentPage } = useSelector((state: any) => state.user);
-  const itemsPerPage: number = 4;
+interface Props {
+  changePage: (page: number) => void;
+  repositories: Repo[];
+  currentPage: number;
+  totalRepos: number;
+}
 
-  const getRepoItems = (): JSX.Element | undefined => {
-    if (!repositories.length) return;
+const Repositories: FC<Props> = props => {
+  const { changePage, repositories, currentPage, totalRepos } = props;
+  const itemsPerPage = 4;
+
+  const getRepoItems = (): ReactNode | null => {
+    if (!repositories.length) {
+      return null;
+    }
 
     return (
       <>
@@ -37,14 +45,17 @@ const Repositories: FC = (): JSX.Element => {
     );
   };
 
-  const getPagination = (): JSX.Element | undefined => {
-    if (!repositories.length) return;
+  const getPagination = (): ReactNode | null => {
+    if (!repositories.length) {
+      return null;
+    }
 
     return (
       <PaginationApp
         itemsPerPage={itemsPerPage}
         currentPage={currentPage}
-        countItems={user.public_repos}
+        countItems={totalRepos}
+        changePage={changePage}
       />
     );
   };
@@ -52,7 +63,7 @@ const Repositories: FC = (): JSX.Element => {
   return (
     <div className="repositories">
       <div className="repositories__content">
-        <h3 className="repositories__title">{`Repositories (${user.public_repos})`}</h3>
+        <h3 className="repositories__title">{`Repositories (${totalRepos})`}</h3>
 
         <div className="cards__container">{getRepoItems()}</div>
 

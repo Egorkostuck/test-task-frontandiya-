@@ -1,18 +1,7 @@
-import { FC, JSX, SetStateAction, useEffect, useState } from 'react';
+import { FC, SetStateAction, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import { getRepoByLink, getUserByName } from '../../api/Api';
-import {
-  fetchUserRequest,
-  fetchUserSuccess,
-  fetchUserFailure,
-  fetchUserReposRequest,
-  fetchUserReposSuccess,
-  clearUserData,
-} from '../../store/user/userData.slice';
-
-import '../../styles/components/input-search.scss';
+import 'styles/components/input-search.scss';
+import useDebounced from 'hooks/useDebounced';
 
 export interface GitHubUser {
   name: string;
@@ -27,51 +16,20 @@ export interface GitHubUser {
   [key: string]: unknown;
 }
 
-const InputSearch: FC = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { user, currentPage } = useSelector((state: any) => state.user);
+interface Props {
+  onInputChange: (value: string) => void;
+}
+
+const InputSearch: FC<Props> = ({ onInputChange }) => {
   const [searchProfile, setSearchProfile] = useState('');
+  const delay = 1000;
 
-  const delay: number = 1000;
-  const perPage: number = 4;
+  useDebounced({
+    callback: () => onInputChange(searchProfile),
+    delay,
+    dependencies: [searchProfile],
+  });
 
-  const fetchRepos = async (login: string): Promise<void | null> => {
-    dispatch(fetchUserReposRequest());
-
-    const response = await getRepoByLink({ login, currentPage, perPage });
-
-    dispatch(fetchUserReposSuccess(response));
-  };
-  const fetchUser = async (): Promise<GitHubUser | null> => {
-    dispatch(fetchUserRequest());
-
-    const response = await getUserByName(searchProfile);
-
-    if (response?.message) {
-      dispatch(fetchUserFailure(response.message));
-
-      return null;
-    }
-
-    if (response) {
-      dispatch(fetchUserSuccess(response));
-      await fetchRepos(response.login);
-    }
-
-    return user;
-  };
-
-  useEffect(() => {
-    const delayRequest = setTimeout(async (): Promise<void> => {
-      if (searchProfile.trim() !== '') {
-        await fetchUser();
-      } else {
-        dispatch(clearUserData());
-      }
-    }, delay);
-
-    return () => clearTimeout(delayRequest);
-  }, [searchProfile]);
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }): void => {
     setSearchProfile(e.target.value);
   };

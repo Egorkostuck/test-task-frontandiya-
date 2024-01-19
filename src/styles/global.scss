@@ -1,11 +1,11 @@
 @import "common/variables";
 
 @layer reset {
-  @import "./common/normalize";
+  @import "common/normalize";
 }
 
 @layer common {
-  @import "./common/base";
+  @import "common/base";
 }
 
 @layer reset common component section;
