@@ -7,9 +7,8 @@ interface Props {
   description: string;
   url: string;
 }
-const RepoCards: FC<Props> = (props: Props) => {
-  const { name, description, url } = props;
 
+const RepoCards: FC<Props> = ({ name, description, url }) => {
   return (
     <div className="card">
       <div className="card__wrapper">

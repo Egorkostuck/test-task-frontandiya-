@@ -10,9 +10,13 @@ interface Props {
   countItems: number;
   changePage: (page: number) => void;
 }
-const PaginationApp: FC<Props> = (props: Props) => {
-  const { itemsPerPage, currentPage, countItems, changePage } = props;
 
+const PaginationApp: FC<Props> = ({
+  itemsPerPage,
+  currentPage,
+  countItems,
+  changePage,
+}) => {
   const getMaxPages: number = Math.ceil(countItems / itemsPerPage);
 
   const firstItemOnPage: number = Math.ceil(
