@@ -8,9 +8,7 @@ interface Props {
   user: GitHubUser;
 }
 
-const Profile: FC<Props> = (props: Props) => {
-  const { user } = props;
-
+const Profile: FC<Props> = ({ user }) => {
   if (user === null) {
     return <div>not profile</div>;
   }
