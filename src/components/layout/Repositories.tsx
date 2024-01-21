@@ -20,11 +20,15 @@ interface Props {
   totalRepos: number;
 }
 
-const Repositories: FC<Props> = props => {
-  const { changePage, repositories, currentPage, totalRepos } = props;
+const Repositories: FC<Props> = ({
+  changePage,
+  repositories,
+  currentPage,
+  totalRepos,
+}) => {
   const itemsPerPage = 4;
 
-  const getRepoItems = (): ReactNode | null => {
+  const getRepoItems = (): Nullable<ReactNode> => {
     if (!repositories.length) {
       return null;
     }
@@ -45,7 +49,7 @@ const Repositories: FC<Props> = props => {
     );
   };
 
-  const getPagination = (): ReactNode | null => {
+  const getPagination = (): Nullable<ReactNode> => {
     if (!repositories.length) {
       return null;
     }

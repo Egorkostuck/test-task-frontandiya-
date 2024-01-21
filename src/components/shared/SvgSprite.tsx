@@ -1,13 +1,17 @@
 import React, { FC } from 'react';
 
-interface TProps {
-  id: string;
+interface Props {
+  id: Nullable<string>;
   size?: [number | string, number | string];
   color?: string;
 }
 
-const SvgSprite: FC<TProps> = props => {
-  const { id = '', size = ['auto', 'auto'], color = 'white' } = props;
+const SvgSprite: FC<Props> = ({
+  id = null,
+  size = ['auto', 'auto'],
+  color = 'white',
+}) => {
+  if (!id) return null;
 
   return (
     <svg className="svg-letter" fill={color} width={size[0]} height={size[1]}>

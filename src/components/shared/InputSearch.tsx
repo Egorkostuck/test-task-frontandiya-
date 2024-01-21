@@ -1,4 +1,4 @@
-import { FC, SetStateAction, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
 import 'styles/components/input-search.scss';
 import useDebounced from 'hooks/useDebounced';
@@ -30,7 +30,7 @@ const InputSearch: FC<Props> = ({ onInputChange }) => {
     dependencies: [searchProfile],
   });
 
-  const handleInputChange = (e: { target: { value: SetStateAction<string> } }): void => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchProfile(e.target.value);
   };
 

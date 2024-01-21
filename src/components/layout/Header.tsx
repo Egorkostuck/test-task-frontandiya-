@@ -7,6 +7,7 @@ import 'styles/components/header.scss';
 interface Props {
   onSearchInputChange: (value: string) => void;
 }
+
 const Header: FC<Props> = ({ onSearchInputChange }) => {
   return (
     <header className="header">

@@ -1,4 +1,4 @@
-import { FC, ReactNode, useMemo, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 
 import { useGetReposByLoginQuery, useGetUserByLoginQuery } from 'api/user.api';
 import DefaultWindow from 'components/layout/DefaultWindow';
@@ -6,14 +6,12 @@ import Header from 'components/layout/Header';
 import Profile from 'components/layout/Profile';
 import Repositories from 'components/layout/Repositories';
 import Container from 'components/shared/Container';
-
 import 'styles/components/app.scss';
 
 const App: FC = () => {
   const [searchProfile, setSearchProfile] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(undefined);
 
   const user = useGetUserByLoginQuery(searchProfile, {
     skip: !searchProfile,
@@ -45,7 +43,7 @@ const App: FC = () => {
     return setCurrentPage(page);
   };
 
-  const getRepositories = (): ReactNode | null => {
+  const getRepositories = (): Nullable<ReactNode> => {
     const repositories = reposData ?? null;
     const totalRepos = userData?.public_repos ?? 0;
 
@@ -63,7 +61,9 @@ const App: FC = () => {
     return null;
   };
 
-  const getContent = (): ReactNode | null => {
+  const getContent = (): Nullable<ReactNode> => {
+    const error = errorUser || errorRepos;
+
     if (!userData) {
       return <DefaultWindow loading={isLoading} error={error} />;
     }
@@ -85,19 +85,12 @@ const App: FC = () => {
     setCurrentPage(1);
   };
 
-  useMemo(() => {
+  useEffect(() => {
     if (isFetchingUser || isFetchingRepos) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-
-    if (isErrorUser || isErrorRepos) {
-      // @ts-ignore
-      return isErrorUser ? setError(errorUser) : setError(errorRepos);
-    }
-
-    return null;
   }, [isFetchingUser, isFetchingRepos, isErrorUser, isErrorRepos]);
 
   return (

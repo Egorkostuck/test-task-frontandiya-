@@ -1,29 +1,22 @@
 import { FC, ReactNode } from 'react';
 
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit/react';
+
 import SvgSprite from 'components/shared/SvgSprite';
+
 import 'styles/components/default-window.scss';
-
-interface Data {
-  message: string;
-  documentation_url: string;
-}
-
-interface Error {
-  data: Data;
-  status: number;
-}
 
 interface Props {
   loading: boolean;
-  error?: Error;
+  error?: FetchBaseQueryError | SerializedError;
 }
-const DefaultWindow: FC<Props> = props => {
-  const { loading = false, error } = props;
 
+const DefaultWindow: FC<Props> = ({ loading = false, error }) => {
   const sizeIcon = 70;
   const defaultText = 'Start with searching a GitHub user';
 
-  const getLoader = (): ReactNode | null => {
+  const getLoader = (): Nullable<ReactNode> => {
     if (loading) {
       return <div className="default-window__loader" />;
     }
@@ -31,13 +24,27 @@ const DefaultWindow: FC<Props> = props => {
     return null;
   };
 
-  const getErrorMessage = (): ReactNode | null => {
-    return error && loading === false ? (
-      <h3 className="default-window__text">{error?.data?.message}</h3>
-    ) : null;
+  const getErrorMessage = (): Nullable<ReactNode> => {
+    const status = 404;
+
+    if (error && !loading) {
+      if ('status' in error) {
+        const errMsg = 'error' in error ? error.error : JSON.stringify(error.data);
+
+        if (error.status === status) {
+          return <h3 className="default-window__text">Not Found</h3>;
+        }
+
+        return <h3 className="default-window__text">{errMsg}</h3>;
+      }
+
+      return <h3 className="default-window__text">{error.message}</h3>;
+    }
+
+    return null;
   };
 
-  const getContent = (): ReactNode | null => {
+  const getContent = (): Nullable<ReactNode> => {
     if (loading || error) {
       return null;
     }

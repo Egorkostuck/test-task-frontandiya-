@@ -6,8 +6,11 @@ interface UseDebouncedEffectProps {
   dependencies: string[];
 }
 
-const useDebounced = (props: UseDebouncedEffectProps): void => {
-  const { callback, delay, dependencies } = props;
+const useDebounced = ({
+  callback,
+  delay,
+  dependencies,
+}: UseDebouncedEffectProps): void => {
   const callbackRef = useRef(callback);
 
   useEffect(() => {
