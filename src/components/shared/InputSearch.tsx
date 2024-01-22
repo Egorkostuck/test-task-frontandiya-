@@ -20,9 +20,10 @@ interface Props {
   onInputChange: (value: string) => void;
 }
 
+const delay = 1000;
+
 const InputSearch: FC<Props> = ({ onInputChange }) => {
   const [searchProfile, setSearchProfile] = useState('');
-  const delay = 1000;
 
   useDebounced({
     callback: () => onInputChange(searchProfile),

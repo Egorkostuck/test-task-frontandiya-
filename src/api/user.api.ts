@@ -14,7 +14,7 @@ export const userApi = api.injectEndpoints({
     }),
     getReposByLogin: build.query<Repo[], RepoParams>({
       query: params => {
-        return `users/${params.login}/repos?per_page=4&page=${params.page}`;
+        return `users/${params.login}/repos?per_page=4&page=${params.page + 1}`;
       },
     }),
   }),
