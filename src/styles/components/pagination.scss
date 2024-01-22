@@ -10,6 +10,47 @@
     justify-content: flex-end;
     gap: 20px;
 
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+
+      @include breakpoint-down(mobile) {
+        gap: 5px;
+      }
+
+      li {
+        padding: 5px;
+        font-size: 16px;
+        background-color: transparent;
+        border-radius: 2px;
+        color: var(--grey);
+        font-family: $open-sans;
+        font-weight: 500;
+        transition: background-color $transition-default;
+
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--blue);
+            color: var(--white);
+          }
+        }
+
+        @media (pointer: coarse) {
+          &:active {
+            background-color: var(--blue);
+            color: var(--white);
+          }
+        }
+
+        &.selected {
+          background-color: var(--blue);
+          color: var(--white);
+        }
+      }
+    }
+
     @include breakpoint-down(mobile) {
       flex-direction: column;
     }
@@ -17,6 +58,8 @@
     &__info {
       color: var(--grey);
       font-size: 16px;
+      font-weight: 700;
+      font-family: $open-sans;
     }
 
     .css-yx0nvq-MuiButtonBase-root-MuiPaginationItem-root {

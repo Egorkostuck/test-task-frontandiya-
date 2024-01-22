@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 
 import { useGetReposByLoginQuery, useGetUserByLoginQuery } from 'api/user.api';
 import DefaultWindow from 'components/layout/DefaultWindow';
@@ -10,14 +10,21 @@ import 'styles/components/app.scss';
 
 const App: FC = () => {
   const [searchProfile, setSearchProfile] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const user = useGetUserByLoginQuery(searchProfile, {
+  const {
+    currentData: userData,
+    isFetching: isFetchingUser,
+    error: errorUser,
+  } = useGetUserByLoginQuery(searchProfile, {
     skip: !searchProfile,
   });
 
-  const repos = useGetReposByLoginQuery(
+  const {
+    currentData: reposData,
+    isFetching: isFetchingRepos,
+    error: errorRepos,
+  } = useGetReposByLoginQuery(
     {
       login: searchProfile,
       page: currentPage,
@@ -25,47 +32,18 @@ const App: FC = () => {
     { skip: !searchProfile },
   );
 
-  const {
-    currentData: userData,
-    isFetching: isFetchingUser,
-    error: errorUser,
-    isError: isErrorUser,
-  } = user;
-
-  const {
-    currentData: reposData,
-    isFetching: isFetchingRepos,
-    error: errorRepos,
-    isError: isErrorRepos,
-  } = repos;
-
   const changePage = (page: number): void => {
     return setCurrentPage(page);
   };
 
-  const getRepositories = (): Nullable<ReactNode> => {
+  const getContent = (): Nullable<ReactNode> => {
+    const error = errorUser || errorRepos;
+    const isLoading = isFetchingUser && isFetchingRepos;
     const repositories = reposData ?? null;
     const totalRepos = userData?.public_repos ?? 0;
 
-    if (repositories) {
-      return (
-        <Repositories
-          changePage={changePage}
-          repositories={repositories}
-          currentPage={currentPage}
-          totalRepos={totalRepos}
-        />
-      );
-    }
-
-    return null;
-  };
-
-  const getContent = (): Nullable<ReactNode> => {
-    const error = errorUser || errorRepos;
-
     if (!userData) {
-      return <DefaultWindow loading={isLoading} error={error} />;
+      return <DefaultWindow isLoading={isLoading} error={error} />;
     }
 
     return (
@@ -74,7 +52,14 @@ const App: FC = () => {
           <div className="app__info-container">
             {userData && <Profile user={userData} />}
 
-            {getRepositories()}
+            {repositories && (
+              <Repositories
+                handleChangePage={changePage}
+                repositories={repositories}
+                currentPage={currentPage}
+                totalRepos={totalRepos}
+              />
+            )}
           </div>
         </Container>
       </div>
@@ -82,16 +67,8 @@ const App: FC = () => {
   };
   const handleSearchInputChange = (value: string): void => {
     setSearchProfile(value);
-    setCurrentPage(1);
+    setCurrentPage(0);
   };
-
-  useEffect(() => {
-    if (isFetchingUser || isFetchingRepos) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isFetchingUser, isFetchingRepos, isErrorUser, isErrorRepos]);
 
   return (
     <div className="app">
