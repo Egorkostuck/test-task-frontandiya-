@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import 'styles/components/profile.scss';
-import { GitHubUser } from 'components/shared/InputSearch';
-import SvgSprite from 'components/shared/SvgSprite';
+import { GitHubUser } from 'components/shared/inputSearch/types';
+import SvgSprite from 'components/shared/svgSprite/SvgSprite';
 
 interface Props {
   user: GitHubUser;
