@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import InputSearch from 'components/shared/InputSearch';
-import SvgSprite from 'components/shared/SvgSprite';
+import InputSearch from 'components/shared/inputSearch/InputSearch';
+import SvgSprite from 'components/shared/svgSprite/SvgSprite';
 import 'styles/components/header.scss';
 
 interface Props {

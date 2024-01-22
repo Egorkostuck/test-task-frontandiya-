@@ -1,17 +1,11 @@
 import { FC } from 'react';
 
-import PaginationApp from 'components/shared/Pagination';
-import RepoCards from 'components/shared/RepoCards';
+import PaginationApp from 'components/shared/pagination/Pagination';
+import RepoCards from 'components/shared/repoCards/RepoCards';
+import { itemsPerPage } from 'components/shared/repositories/config';
+import { Repo } from 'components/shared/repositories/type';
 
 import 'styles/components/repositories.scss';
-
-export type Repo = {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  [key: string]: unknown;
-};
 
 interface Props {
   handleChangePage: (page: number) => void;
@@ -19,8 +13,6 @@ interface Props {
   currentPage: number;
   totalRepos: number;
 }
-
-const itemsPerPage = 4;
 
 const Repositories: FC<Props> = ({
   handleChangePage,

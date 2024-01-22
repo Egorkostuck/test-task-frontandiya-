@@ -1,11 +1,8 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { useGetReposByLoginQuery, useGetUserByLoginQuery } from 'api/user.api';
-import DefaultWindow from 'components/layout/DefaultWindow';
-import Header from 'components/layout/Header';
-import Profile from 'components/layout/Profile';
-import Repositories from 'components/layout/Repositories';
-import Container from 'components/shared/Container';
+import Content from 'components/layout/content/Content';
+import Header from 'components/layout/header/Header';
 import 'styles/components/app.scss';
 
 const App: FC = () => {
@@ -36,35 +33,6 @@ const App: FC = () => {
     return setCurrentPage(page);
   };
 
-  const getContent = (): Nullable<ReactNode> => {
-    const error = errorUser || errorRepos;
-    const isLoading = isFetchingUser && isFetchingRepos;
-    const repositories = reposData ?? null;
-    const totalRepos = userData?.public_repos ?? 0;
-
-    if (!userData) {
-      return <DefaultWindow isLoading={isLoading} error={error} />;
-    }
-
-    return (
-      <div className="app__content">
-        <Container>
-          <div className="app__info-container">
-            {userData && <Profile user={userData} />}
-
-            {repositories && (
-              <Repositories
-                handleChangePage={changePage}
-                repositories={repositories}
-                currentPage={currentPage}
-                totalRepos={totalRepos}
-              />
-            )}
-          </div>
-        </Container>
-      </div>
-    );
-  };
   const handleSearchInputChange = (value: string): void => {
     setSearchProfile(value);
     setCurrentPage(0);
@@ -74,7 +42,18 @@ const App: FC = () => {
     <div className="app">
       <Header onSearchInputChange={handleSearchInputChange} />
 
-      <main>{getContent()}</main>
+      <main>
+        <Content
+          errorUser={errorUser}
+          errorRepos={errorRepos}
+          isFetchingUser={isFetchingUser}
+          isFetchingRepos={isFetchingRepos}
+          reposData={reposData}
+          userData={userData}
+          changePage={changePage}
+          currentPage={currentPage}
+        />
+      </main>
     </div>
   );
 };
