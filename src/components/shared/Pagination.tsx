@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import Pagination from '@mui/material/Pagination';
+import ReactPaginate from 'react-paginate';
 
 import 'styles/components/pagination.scss';
 
@@ -20,11 +20,11 @@ const PaginationApp: FC<Props> = ({
   const getMaxPages: number = Math.ceil(countItems / itemsPerPage);
 
   const firstItemOnPage: number = Math.ceil(
-    itemsPerPage * currentPage - (itemsPerPage - 1),
+    itemsPerPage * (currentPage + 1) - (itemsPerPage - 1),
   );
 
   const getLastItemOnPage = (): number => {
-    let lastItemOnPage: number = Math.ceil(itemsPerPage * currentPage);
+    let lastItemOnPage: number = Math.ceil(itemsPerPage * (currentPage + 1));
 
     if (lastItemOnPage > countItems) {
       lastItemOnPage = countItems;
@@ -33,20 +33,23 @@ const PaginationApp: FC<Props> = ({
     return lastItemOnPage;
   };
 
-  const handleChange = (event: unknown, value: number): void => {
-    changePage(value);
+  const handleChangePage = (selectedItem: { selected: number }): void => {
+    changePage(selectedItem.selected);
   };
 
   return (
     <div className="pagination">
       <span className="pagination__info">{`${firstItemOnPage} - ${getLastItemOnPage()} of ${countItems}`}</span>
 
-      <Pagination
-        count={getMaxPages}
-        page={currentPage}
-        onChange={handleChange}
-        shape="rounded"
-        size="large"
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel=">"
+        onPageChange={handleChangePage}
+        pageRangeDisplayed={3}
+        pageCount={getMaxPages}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
+        initialPage={currentPage}
       />
     </div>
   );
