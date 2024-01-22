@@ -16,7 +16,7 @@ const RepoCards: FC<Props> = ({ name, description, url }) => {
           {name}
         </a>
 
-        {description ? <p className="card__description">{description}</p> : ''}
+        {description && <p className="card__description">{description}</p>}
       </div>
     </div>
   );

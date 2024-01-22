@@ -1,6 +1,6 @@
 import { api } from 'api/Api';
-import { Repo } from 'components/layout/Repositories';
-import { GitHubUser } from 'components/shared/InputSearch';
+import { GitHubUser } from 'components/shared/inputSearch/InputSearch';
+import { Repo } from 'components/shared/repositories/Repositories';
 
 interface RepoParams {
   login: string;
