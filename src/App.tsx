@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC, useState } from 'react';
 
-function App() {
+import { useGetReposByLoginQuery, useGetUserByLoginQuery } from 'api/user.api';
+import Content from 'components/layout/content/Content';
+import Header from 'components/layout/header/Header';
+import 'styles/components/app.scss';
+
+const App: FC = () => {
+  const [searchProfile, setSearchProfile] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const {
+    currentData: userData,
+    isFetching: isFetchingUser,
+    error: errorUser,
+  } = useGetUserByLoginQuery(searchProfile, {
+    skip: !searchProfile,
+  });
+
+  const {
+    currentData: reposData,
+    isFetching: isFetchingRepos,
+    error: errorRepos,
+  } = useGetReposByLoginQuery(
+    {
+      login: searchProfile,
+      page: currentPage,
+    },
+    { skip: !searchProfile },
+  );
+
+  const changePage = (page: number): void => {
+    return setCurrentPage(page);
+  };
+
+  const handleSearchInputChange = (value: string): void => {
+    setSearchProfile(value);
+    setCurrentPage(0);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header onSearchInputChange={handleSearchInputChange} />
+
+      <main>
+        <Content
+          errorUser={errorUser}
+          errorRepos={errorRepos}
+          isFetchingUser={isFetchingUser}
+          isFetchingRepos={isFetchingRepos}
+          reposData={reposData}
+          userData={userData}
+          changePage={changePage}
+          currentPage={currentPage}
+        />
+      </main>
     </div>
   );
-}
+};
 
 export default App;

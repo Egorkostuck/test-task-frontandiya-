@@ -1,0 +1,65 @@
+@import "src/styles/common/functions";
+
+@mixin clearfix {
+  content: "";
+  clear: both;
+  display: table;
+  line-height: 0;
+}
+
+@mixin breakpoint-up($name, $breakpoints: $breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+
+  @media (min-width: $min) {
+    @content;
+  }
+}
+
+@mixin breakpoint-down($name, $breakpoints: $breakpoints) {
+  $max: breakpoint-max($name, $breakpoints);
+
+  @if $max == 767px {
+    @media (max-width: $max),
+      screen and (max-width: $responsive-ios) and (orientation: landscape) {
+      @content;
+    }
+  } @else {
+    /* eslint-disable-line */
+
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+@mixin breakpoint-between($lower, $upper, $breakpoints: $breakpoints) {
+  $min: breakpoint-min($lower, $breakpoints);
+  $max: breakpoint-max($upper, $breakpoints);
+
+  @media (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin custom-scrollbar($background, $thumb, $width) {
+  /* Chrome, Edge и Safari */
+  &::-webkit-scrollbar {
+    position: absolute;
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb;
+    border-radius: 0;
+  }
+
+  /* Firefox */
+  & {
+    scrollbar-color: $thumb $background;
+    scrollbar-width: thin;
+  }
+}

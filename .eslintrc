@@ -4,6 +4,9 @@
     "es6": true,
     "browser": true
   },
+  "globals": {
+    "Nullable": "writable"
+  },
   "extends": [
     "airbnb",
     "prettier",
@@ -158,6 +161,7 @@
     "@typescript-eslint/no-unused-vars": [
       "error"
     ],
+    "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
@@ -236,6 +240,10 @@
         [
           "utils",
           "./src/utils"
+        ],
+        [
+          "global",
+          "./src/global.d.ts"
         ]
       ]
     }

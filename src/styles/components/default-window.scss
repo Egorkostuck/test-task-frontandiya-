@@ -1,0 +1,40 @@
+@import "src/styles/common/variables";
+@import "src/styles/common/functions";
+@import "src/styles/common/mixin";
+
+@layer component {
+  .default-window {
+    width: 100%;
+    height: 100vh;
+
+    &__container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    &__loader {
+      border: 16px solid var(--grey);
+      border-top: 16px solid var(--blue);
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    &__text {
+      margin-top: 20px !important;
+      font-size: 24px !important;
+      color: var(--grey);
+      max-width: 210px;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@import "common/variables";
+
+@layer reset {
+  @import "common/normalize";
+}
+
+@layer common {
+  @import "common/base";
+}
+
+@layer reset common component section;
+
+:root {
+  --white: #fff;
+  --bg: #FAFAFA;
+  --grey: #808080;
+  --blue: #0064EB;
+  --error: #d3000c;
+  --black: #000;
+}
